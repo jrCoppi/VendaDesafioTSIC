@@ -29,8 +29,8 @@ return [
                 'options' => [
                     'route'    => '/produto',
                     'defaults' => [
-                        'controller' => Controller\IndexController::class,
-                        'action'     => 'produto',
+                        'controller' => Controller\ProdutoController::class,
+                        'action'     => 'index',
                     ],
                 ]
             ],
@@ -39,8 +39,8 @@ return [
                 'options' => [
                     'route'    => '/documento',
                     'defaults' => [
-                        'controller' => Controller\IndexController::class,
-                        'action'     => 'documento',
+                        'controller' => Controller\DocumentoController::class,
+                        'action'     => 'index',
                     ],
                 ]
             ],
@@ -49,6 +49,8 @@ return [
     'controllers' => [
         'factories' => [
             Controller\IndexController::class => InvokableFactory::class,
+            Controller\ProdutoController::class => InvokableFactory::class,
+            Controller\DocumentoController::class => InvokableFactory::class,
         ],
     ],
     'view_manager' => [
@@ -58,6 +60,8 @@ return [
         'template_map' => [
             'layout/layout'           => __DIR__ . '/../view/layout/layout.phtml',
             'application/index/index' => __DIR__ . '/../view/application/index/index.phtml',
+            'application/produto/index' => __DIR__ . '/../view/application/produto/index.phtml',
+            'application/documento/index' => __DIR__ . '/../view/application/documento/index.phtml',
         ],
         'template_path_stack' => [
             __DIR__ . '/../view',
