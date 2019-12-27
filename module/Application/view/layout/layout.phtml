@@ -2,7 +2,7 @@
 
 <html lang="en">
     <head>
-        <meta charset="utf-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
         <?= $this->headTitle('Desafio TSIC')->setSeparator(' - ')->setAutoEscape(false) ?>
 
         <?= $this->headMeta()
@@ -11,17 +11,44 @@
         ?>
 
         <?= $this->headLink(['rel' => 'shortcut icon', 'type' => 'image/vnd.microsoft.icon', 'href' => $this->basePath() . '/img/favicon.ico'])
-            ->prependStylesheet($this->basePath('css/style.css'))
+            ->prependStylesheet($this->basePath('css/estilo.css'))
             ->prependStylesheet($this->basePath('css/bootstrap.min.css'))
+            ->prependStylesheet($this->basePath('css/bootstrap-theme.min.css'))
+            ->prependStylesheet($this->basePath('css/bootstrap-theme.min.css'))
         ?>
 
         <!-- Scripts -->
         <?= $this->inlineScript()
             ->prependFile($this->basePath('js/bootstrap.min.js'))
-            ->prependFile($this->basePath('js/jquery-3.3.1.min.js'))
+            ->prependFile($this->basePath('js/jquery-1.11.3.min.js'))
+            ->prependFile($this->basePath('js/angular.min.js'))
         ?>
     </head>
     <body>
+        <div class="bs-docs-nav navbar navbar-static-top pageHeader">
+
+            <div class="container">
+            <div class="col-md-1" style="text-align:left;">
+                <div class="dropdown">
+                    <div data-toggle="dropdownMenu1" aria-haspopup="true" aria-expanded="true">
+                        <span class="glyphicon glyphicon-align-justify link" href="#"><b> Menu</b></span>
+                    </div>
+
+                    <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+                        <li><a href="">Inicio</a></li>
+                        <li role="separator" class="divider"></li>
+                        <li><a href="<?= $this->url('produto'); ?>">Produto</a></li>
+                        <li role="separator" class="divider"></li>
+                        <li><a href="<?= $this->url('documento'); ?>">Documento</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-md-7"></div>
+            <div class="col-md-4" style="text-align:right;  cursor: pointer; text-decoration: none;">
+                <a href=""><b>Vendas TSIC</b></a>
+            </div>
+            </div>
+        </div>
         <div class="container">
             <?= $this->content ?>
         </div>
