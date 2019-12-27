@@ -16,4 +16,16 @@ class IndexController extends AbstractActionController
     {
         return new ViewModel();
     }
+
+    public function ProdutoAction()
+    {
+        die('Produto');
+        return new ViewModel();
+    }
+
+    public function documentoAction()
+    {
+        die('Documento');
+        return new ViewModel();
+    }
 }

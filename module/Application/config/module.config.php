@@ -24,15 +24,25 @@ return [
                     ],
                 ],
             ],
-            'application' => [
-                'type'    => Segment::class,
+            'produto' => [
+                'type'    => Literal::class,
                 'options' => [
-                    'route'    => '/application[/:action]',
+                    'route'    => '/produto',
                     'defaults' => [
                         'controller' => Controller\IndexController::class,
-                        'action'     => 'index',
+                        'action'     => 'produto',
                     ],
-                ],
+                ]
+            ],
+            'documento' => [
+                'type'    => Literal::class,
+                'options' => [
+                    'route'    => '/documento',
+                    'defaults' => [
+                        'controller' => Controller\IndexController::class,
+                        'action'     => 'documento',
+                    ],
+                ]
             ],
         ],
     ],
