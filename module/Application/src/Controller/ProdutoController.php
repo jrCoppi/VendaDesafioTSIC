@@ -1,6 +1,6 @@
 <?php
 /**
- * Controller principal da aplicação
+ * Controller da ações envolvendo os produtos na aplicação
  */
 
 namespace Application\Controller;
@@ -8,7 +8,7 @@ namespace Application\Controller;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
 
-class IndexController extends AbstractActionController
+class ProdutoController extends AbstractActionController
 {
     public function indexAction()
     {
