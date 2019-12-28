@@ -1,4 +1,8 @@
-<div class="center-block">
+<?= $this->inlineScript()
+            ->prependFile($this->basePath('angular/produto.js'))
+        ?>
+
+<div class="center-block" ng-app="AppProduto" ng-controller="ProdutoController">
 
     <div class="row"><br></div>
 
@@ -15,8 +19,8 @@
                 <h4>Filtrar Produtos</h4>
             </div>
             <div class="panel-body">
-                <input type="text" class="form-control" name="filtroproduto" id="filtroproduto" placeholder="Código ou Descrição">
-                <button type="button" class="btn btn-info" style="margin-top:5px;">
+                <input type="text" class="form-control" ng-model="filtroproduto" name="filtroproduto" id="filtroproduto" placeholder="Código ou Descrição">
+                <button type="button" class="btn btn-info" style="margin-top:5px;" ng-click="realizarFiltro()">
                     Filtrar <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
                 </button>
             </div>
@@ -31,7 +35,7 @@
     
     <div class="row"><br></div>
 
-    <div class="row">
+    <div class="row" ng-show="arrProdutos.length > 0">
         <!-- Table -->
         <table class="table table-striped table-hover table-responsive">
         <thead>
@@ -42,23 +46,19 @@
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <td width="20%">1</td>
-            <td width="40%">Otto</td>
-            <td width="40%">@mdo</td>
-          </tr>
-          <tr>
-            <td>2</td>
-            <td>Thornton</td>
-            <td>@fat</td>
-          </tr>
-          <tr>
-            <td>3</td>
-            <td>the Bird</td>
-            <td>@twitter</td>
+          <tr ng-repeat=" (key, produto) in arrProdutos">
+            <td width="20%">{{produto.ds_codigo_produto}}</td>
+            <td width="40%">{{produto.ds_produto}}</td>
+            <td width="40%">{{produto.vl_produto}}</td>
           </tr>
         </tbody>
       </table>
+    </div>
+
+    <div class="row" ng-show="arrProdutos.length == 0">
+        <div class="alert alert-warning">
+            Favor realizar um filtro valido para visualizar os produtos!
+        </div>
     </div>
 
     <div class="row"><br></div>
@@ -83,26 +83,30 @@
                 </div>
                 
                 <div class="container  col-md-10">
-                    <input type="text" class="form-control" name="codigo" id="codigo" >
+                    <input type="text" class="form-control" ng-model="arrNovoProduto.ds_codigo_produto" name="codigo" id="codigo" >
                 </div>
                 <div class="container  col-md-12"><br></div>
                 <div class="container  col-md-2 text-right">
                     Descrição:
                 </div>
                 <div class="container  col-md-10">
-                    <input type="text" class="form-control" name="descricao" id="descricao">
+                    <input type="text" class="form-control" ng-model="arrNovoProduto.ds_produto" name="descricao" id="descricao">
                 </div>
                 <div class="container  col-md-12"><br></div>
                 <div class="container  col-md-2 text-right">
                     Preço:
                 </div>
                 <div class="container  col-md-6">
-                    <input type="text" class="form-control" name="preco" id="preco">
+                    <input type="text" class="form-control" ng-model="arrNovoProduto.vl_produto" name="preco" id="preco">
+                </div>
+
+                <div class="alert alert-success" ng-show="isProdutoInserido">
+                    <a href="#" class="alert-link">Produto Inserido com sucesso!</a>
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
-                <button type="button" class="btn btn-primary">Incluir</button>
+                <button type="button" class="btn btn-default" id="botaoCancelar" data-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-primary" ng-click="adicionarProduto()">Incluir</button>
             </div>
             </div>
         </div>
