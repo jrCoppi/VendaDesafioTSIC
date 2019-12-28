@@ -68,8 +68,9 @@ class ProdutoController extends AbstractActionController
 
         //Faz a inserção do produto
         //TO-DO caso aconteça um erro ao inserir, setar como erro e retornar a mensagem
-        $arrRetorno['dados'] = $this->setProdutoBase(
-            $arrDadosPost
+        $this->setProdutoBase(
+            $arrDadosPost,
+            $arrRetorno
         );
         
         return new JsonModel($arrRetorno);
@@ -92,8 +93,27 @@ class ProdutoController extends AbstractActionController
 
     //seta o produto na base
     private function setProdutoBase(
-
+        $arrDados,
+        &$arrRetorno
     ) {
-        return [];
+
+        try{
+            //puxa o model do doctrine e cria um novo produto
+            $produto = new \Application\Model\Produto();
+            $produto->setDsCodigoProduto($arrDados->ds_codigo_produto);
+            $produto->setIdProduto(NULL);
+            $produto->setDsProduto($arrDados->ds_produto);
+            $produto->setVlProduto($arrDados->vl_produto);
+
+            $em = $this->getServiceLocator()->get("Doctrine\ORM\EntityManager");
+            var_dump($em);
+            $em->persist($produto);
+
+            
+            $em->flush();
+        }  catch (\Exception $e){
+            $arrRetorno['sucesso'] = false;
+            $arrRetorno['mensagem'] = "Não foi possivel inserir o produto.";
+        }
     }
 }
