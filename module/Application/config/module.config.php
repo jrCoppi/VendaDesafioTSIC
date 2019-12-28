@@ -32,7 +32,30 @@ return [
                         'controller' => Controller\ProdutoController::class,
                         'action'     => 'index',
                     ],
-                ]
+                ],
+                'may_terminate' => true,
+                'child_routes' => [
+                    'get-produto' => [
+                        'type' => Literal::class,
+                        'options' => [
+                            'route' => '/get',
+                            'defaults' => [
+                                'controller' => Controller\ProdutoController::class,
+                                'action'     => 'getProduto',
+                            ],
+                        ],
+                    ],
+                    'set-produto' => [
+                        'type' => Literal::class,
+                        'options' => [
+                            'route' => '/set',
+                            'defaults' => [
+                                'controller' => Controller\ProdutoController::class,
+                                'action'     => 'setProduto',
+                            ],
+                        ],
+                    ],
+                ],
             ],
             'documento' => [
                 'type'    => Literal::class,
@@ -57,14 +80,21 @@ return [
         'display_not_found_reason' => true,
         'display_exceptions'       => true,
         'doctype'                  => 'HTML5',
+        'not_found_template'       => 'error/404',
+        'exception_template'       => 'error/index',
         'template_map' => [
             'layout/layout'           => __DIR__ . '/../view/layout/layout.phtml',
             'application/index/index' => __DIR__ . '/../view/application/index/index.phtml',
             'application/produto/index' => __DIR__ . '/../view/application/produto/index.phtml',
             'application/documento/index' => __DIR__ . '/../view/application/documento/index.phtml',
+            'error/404'               => __DIR__ . '/../view/error/404.phtml',
+            'error/index'             => __DIR__ . '/../view/error/index.phtml',
         ],
         'template_path_stack' => [
             __DIR__ . '/../view',
         ],
+        'strategies' => array(
+            'ViewJsonStrategy',
+        ),
     ],
 ];

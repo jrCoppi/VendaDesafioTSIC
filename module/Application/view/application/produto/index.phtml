@@ -93,9 +93,13 @@
                 <div class="container  col-md-6">
                     <input type="text" class="form-control" ng-model="arrNovoProduto.vl_produto" name="preco" id="preco">
                 </div>
+
+                <div class="alert alert-success" ng-show="isProdutoInserido">
+                    <a href="#" class="alert-link">Produto Inserido com sucesso!</a>
+                </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-default" id="botaoCancelar" data-dismiss="modal">Cancelar</button>
                 <button type="button" class="btn btn-primary" ng-click="adicionarProduto()">Incluir</button>
             </div>
             </div>
