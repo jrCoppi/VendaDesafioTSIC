@@ -35,7 +35,7 @@
     
     <div class="row"><br></div>
 
-    <div class="row">
+    <div class="row" ng-show="arrProdutos.length > 0">
         <!-- Table -->
         <table class="table table-striped table-hover table-responsive">
         <thead>
@@ -53,6 +53,12 @@
           </tr>
         </tbody>
       </table>
+    </div>
+
+    <div class="row" ng-show="arrProdutos.length == 0">
+        <div class="alert alert-warning">
+            Favor realizar um filtro valido para visualizar os produtos!
+        </div>
     </div>
 
     <div class="row"><br></div>

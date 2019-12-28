@@ -19,23 +19,7 @@ function createController( $scope, $http ) {
     };
 
     //Lista de produtos da tabela
-    $scope.arrProdutos = [
-        {
-            ds_codigo_produto : '1',
-            ds_produto : 'Arroz',
-            vl_produto : 10.50,
-        },
-        {
-            ds_codigo_produto : '2',
-            ds_produto : 'Feijão',
-            vl_produto : 5.50,
-        },
-        {
-            ds_codigo_produto : '3',
-            ds_produto : 'Macarrão',
-            vl_produto : 4.00,
-        }
-    ];
+    $scope.arrProdutos = [];
 
     $scope.isProdutoInserido = false;
 

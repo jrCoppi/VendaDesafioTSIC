@@ -11,6 +11,20 @@ use Zend\View\Model\JsonModel;
 
 class ProdutoController extends AbstractActionController
 {
+    /**
+     * Entity manager.
+     * @var Doctrine\ORM\EntityManager 
+     */
+    private $entityManager;
+
+    /**
+     * Constructor is used for injecting dependencies into the controller.
+     */
+    public function __construct($entityManager) 
+    {
+        $this->entityManager = $entityManager;
+    }
+
     public function indexAction()
     {
         return new ViewModel();
@@ -38,8 +52,9 @@ class ProdutoController extends AbstractActionController
         }
 
         //busca produtos na base
-        $arrRetorno['dados'] = $this->getProdutoFromBase(
-            $arrDadosPost->filtroproduto
+        $this->getProdutoFromBase(
+            $arrDadosPost->filtroproduto,
+            $arrRetorno
         );
         
         return new JsonModel($arrRetorno);
@@ -68,8 +83,9 @@ class ProdutoController extends AbstractActionController
 
         //Faz a inserção do produto
         //TO-DO caso aconteça um erro ao inserir, setar como erro e retornar a mensagem
-        $arrRetorno['dados'] = $this->setProdutoBase(
-            $arrDadosPost
+        $this->setProdutoBase(
+            $arrDadosPost,
+            $arrRetorno
         );
         
         return new JsonModel($arrRetorno);
@@ -77,23 +93,45 @@ class ProdutoController extends AbstractActionController
 
     //busca o produto da base
     private function getProdutoFromBase(
-        $filtroproduto
-    ) {
-        //buscar
+        $filtroproduto,
+        &$arrRetorno
+    ) {  
+        try{
+            //faz os filtros para encontrar o produto
+            $result = $this->entityManager->createQueryBuilder();
+            $listaProdutos = $result->select('p')
+                    ->from('Application\Model\Produto', 'p')
+                    ->where('p.ds_codigo_produto like :id')
+                    ->orWhere('p.ds_produto like :id')
+                    ->setParameter('id', '%'.$filtroproduto.'%')
+                    ->getQuery()
+                    ->getResult(\Doctrine\ORM\Query::HYDRATE_ARRAY);
 
-        $arrProdutos = array([
-            'ds_codigo_produto' => '25',
-            'ds_produto' => 'teste',
-            'vl_produto' => 5
-        ]);
-
-        return $arrProdutos;
+            //seta no array de retorno
+            $arrRetorno['dados'] = $listaProdutos;
+        }  catch (\Exception $e){
+            $arrRetorno['sucesso'] = false;
+            $arrRetorno['mensagem'] = "Não foi possivel recuperar os produtos da base.";
+        }
     } 
 
     //seta o produto na base
     private function setProdutoBase(
-
+        $arrDados,
+        &$arrRetorno
     ) {
-        return [];
+        try{
+            //puxa o model do doctrine e cria um novo produto
+            $produto = new \Application\Model\Produto();
+            $produto->setDsCodigoProduto($arrDados->ds_codigo_produto);
+            $produto->setDsProduto($arrDados->ds_produto);
+            $produto->setVlProduto($arrDados->vl_produto);
+
+            $this->entityManager->persist($produto);
+            $this->entityManager->flush();
+        }  catch (\Exception $e){
+            $arrRetorno['sucesso'] = false;
+            $arrRetorno['mensagem'] = "Não foi possivel inserir o produto.";
+        }
     }
 }
