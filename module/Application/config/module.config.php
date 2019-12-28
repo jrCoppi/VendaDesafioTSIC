@@ -72,8 +72,8 @@ return [
     'controllers' => [
         'factories' => [
             Controller\IndexController::class => Controller\Factory\IndexControllerFactory::class,
-            Controller\ProdutoController::class => InvokableFactory::class,
-            Controller\DocumentoController::class => InvokableFactory::class,
+            Controller\ProdutoController::class => Controller\Factory\ProdutoControllerFactory::class,
+            Controller\DocumentoController::class => Controller\Factory\DocumentoControllerFactory::class
         ],
     ],
     'view_manager' => [

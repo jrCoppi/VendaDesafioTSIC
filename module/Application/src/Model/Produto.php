@@ -9,7 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
 class Produto {
   
     /**
-     * @ORM\id_produto
+     * @ORM\Id
      * @ORM\GeneratedValue("AUTO")
      * @ORM\Column(type="integer")
      */
