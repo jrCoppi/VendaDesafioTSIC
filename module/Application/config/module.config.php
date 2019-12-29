@@ -45,6 +45,16 @@ return [
                             ],
                         ],
                     ],
+                    'get-venda' => [
+                        'type' => Literal::class,
+                        'options' => [
+                            'route' => '/get-venda',
+                            'defaults' => [
+                                'controller' => Controller\ProdutoController::class,
+                                'action'     => 'getProdutoVenda',
+                            ],
+                        ],
+                    ],
                     'set-produto' => [
                         'type' => Literal::class,
                         'options' => [
@@ -65,7 +75,40 @@ return [
                         'controller' => Controller\DocumentoController::class,
                         'action'     => 'index',
                     ],
-                ]
+                ],
+                'may_terminate' => true,
+                'child_routes' => [
+                    'update' => [
+                        'type' => Literal::class,
+                        'options' => [
+                            'route' => '/update',
+                            'defaults' => [
+                                'controller' => Controller\DocumentoController::class,
+                                'action'     => 'updateVenda',
+                            ],
+                        ],
+                    ],
+                    'update-produto' => [
+                        'type' => Literal::class,
+                        'options' => [
+                            'route' => '/update-produto',
+                            'defaults' => [
+                                'controller' => Controller\DocumentoController::class,
+                                'action'     => 'updateProdutoVenda',
+                            ],
+                        ],
+                    ],
+                    'set' => [
+                        'type' => Literal::class,
+                        'options' => [
+                            'route' => '/set',
+                            'defaults' => [
+                                'controller' => Controller\DocumentoController::class,
+                                'action'     => 'setVenda',
+                            ],
+                        ],
+                    ],
+                ],
             ],
         ],
     ],
