@@ -49,6 +49,7 @@ function createController( $scope, $http ) {
                 //se não achou produto
                 if(data.dados.length == 0){
                     $scope.snProdutoFiltradoExiste = false;
+                    $scope.snAtualizandoVenda = false;
                     return false;
                 }
 

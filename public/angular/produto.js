@@ -21,7 +21,9 @@ function createController( $scope, $http ) {
     //Lista de produtos da tabela
     $scope.arrProdutos = [];
 
-    $scope.isProdutoInserido = false;
+    $scope.snProdutoInserido = false;
+    $scope.snFiltroValido = null
+    $scope.snAtualizandoProduto = false;
 
     //Realizar o filtro na lista de produtos
     $scope.realizarFiltro = function(){
@@ -43,25 +45,62 @@ function createController( $scope, $http ) {
 
      //Adicionar um novo produto a base
     $scope.adicionarProduto = function(){
+        $scope.snFiltroValido = null;
+
+        if($scope.snAtualizandoProduto){
+            return false;
+        }
+        $scope.snAtualizandoProduto = true;
+
         $http.post(
             'produto/set',
             $scope.arrNovoProduto
         )
         .success(
             function(data){
-                //$scope.isProdutoInserido = data.sucesso;
+                $scope.snProdutoInserido = data.sucesso;
                 //se deu certo atualiza a listagem, mostra mensagem
-                /*if(data.sucesso == true){
-                    /*setTimeout(
+                if(data.sucesso == true){
+                    setTimeout(
                         function() {
-                            $('#myModal').modal('hide');
-                            $('.modal-backdrop').hide();
+                            //fecha a modal e recarrega o filtro
+                            botaoCancelar.click();
+
+                            $scope.filtroproduto = $scope.arrNovoProduto.ds_codigo_produto;
+                            $scope.realizarFiltro();
                         }, 1000
                     );
+
+                    return false;
                 }
 
-                $scope.isProdutoInserido = false;*/
+                $scope.snFiltroValido = false;
+                $scope.snAtualizandoProduto = false;
             }
         );
      }
+
+
+    $scope.novoProduto = function(){
+        //Dados da modal de novo produto
+        $scope.arrNovoProduto = {
+            ds_codigo_produto : '',
+            ds_produto : '',
+            vl_produto : 0.00,   
+        };
+
+        $scope.snProdutoInserido = false;
+        $scope.snFiltroValido = null
+        $scope.snAtualizandoProduto = false;  
+    }
+}
+
+function isNumberKey(evt)
+{
+    var charCode = (evt.which) ? evt.which : evt.keyCode;
+    if (charCode != 46 && charCode > 31 
+    && (charCode < 48 || charCode > 57))
+        return false;
+
+    return true;
 }
