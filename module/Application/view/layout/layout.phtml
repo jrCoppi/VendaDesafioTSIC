@@ -25,31 +25,23 @@
         ?>
     </head>
     <body>
-        <div class="bs-docs-nav navbar navbar-static-top pageHeader">
-
-            <div class="container">
-            <div class="col-md-1" style="text-align:left;">
-                <div class="dropdown">
-                    <div data-toggle="dropdownMenu1" aria-haspopup="true" aria-expanded="true">
-                        <span class="glyphicon glyphicon-align-justify link" href="#"><b> Menu</b></span>
-                    </div>
-
-                    <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
-                        <li><a href="">Inicio</a></li>
-                        <li role="separator" class="divider"></li>
-                        <li><a href="<?= $this->url('produto'); ?>">Produto</a></li>
-                        <li role="separator" class="divider"></li>
-                        <li><a href="<?= $this->url('documento'); ?>">Documento</a></li>
-                    </ul>
-                </div>
-            </div>
-            <div class="col-md-7"></div>
-            <div class="col-md-4" style="text-align:right;  cursor: pointer; text-decoration: none;">
-                <a href=""><b>Vendas TSIC</b></a>
-            </div>
-            </div>
-        </div>
         <div class="container">
+            <nav class="navbar navbar-default ">
+                <div class="container-fluid">
+                    <div class="navbar-header">
+                        <a class="navbar-brand" href="#">Vendas TSIC</a>
+                    </div>
+                    <div id="navbar" class="navbar-collapse collapse">
+
+                        <ul class="nav navbar-nav navbar-right">
+                        <li><a href="./">Inicio</a></li>
+                        <li><a href="<?= $this->url('produto'); ?>">Produto</a></li>
+                        <li><a href="<?= $this->url('documento'); ?>">Venda</a></li>
+                        </ul>
+                    </div><!--/.nav-collapse -->
+                </div><!--/.container-fluid -->
+            </nav>
+
             <?= $this->content ?>
         </div>
         <?= $this->inlineScript() ?>

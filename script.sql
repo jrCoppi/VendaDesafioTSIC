@@ -18,9 +18,7 @@ Create Table produto (
 ## TO-DO manter tinyint ou boolean?
 Create Table documento (
 	id_documento integer(11) UNSIGNED NOT NULL AUTO_INCREMENT,
-	ds_documento varchar(255),
-	nr_documento int(11) DEFAULT 0,
-	nr_qtd_item_documento int(11) DEFAULT 0,
+	vl_total_documento float DEFAULT NULL,
 	sn_documento_confirmado tinyint(1) DEFAULT 0, 
     sn_documento_cancelado tinyint(1) DEFAULT 0, 
 	Primary Key(id_documento)

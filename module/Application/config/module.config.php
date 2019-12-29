@@ -24,6 +24,25 @@ return [
                     ],
                 ],
             ],
+            'admin' => [
+                'type'    => Literal::class,
+                'options' => [
+                    'route'    => '/admin'
+                ],
+                'may_terminate' => false,
+                'child_routes' => [
+                    'get' => [
+                        'type' => Literal::class,
+                        'options' => [
+                            'route' => '/get',
+                            'defaults' => [
+                                'controller' => Controller\IndexController::class,
+                                'action'     => 'getDadosAdmin',
+                            ],
+                        ],
+                    ],
+                ],
+            ],
             'produto' => [
                 'type'    => Literal::class,
                 'options' => [
@@ -42,6 +61,16 @@ return [
                             'defaults' => [
                                 'controller' => Controller\ProdutoController::class,
                                 'action'     => 'getProduto',
+                            ],
+                        ],
+                    ],
+                    'get-venda' => [
+                        'type' => Literal::class,
+                        'options' => [
+                            'route' => '/get-venda',
+                            'defaults' => [
+                                'controller' => Controller\ProdutoController::class,
+                                'action'     => 'getProdutoVenda',
                             ],
                         ],
                     ],
@@ -65,7 +94,40 @@ return [
                         'controller' => Controller\DocumentoController::class,
                         'action'     => 'index',
                     ],
-                ]
+                ],
+                'may_terminate' => true,
+                'child_routes' => [
+                    'update' => [
+                        'type' => Literal::class,
+                        'options' => [
+                            'route' => '/update',
+                            'defaults' => [
+                                'controller' => Controller\DocumentoController::class,
+                                'action'     => 'updateVenda',
+                            ],
+                        ],
+                    ],
+                    'update-produto' => [
+                        'type' => Literal::class,
+                        'options' => [
+                            'route' => '/update-produto',
+                            'defaults' => [
+                                'controller' => Controller\DocumentoController::class,
+                                'action'     => 'updateProdutoVenda',
+                            ],
+                        ],
+                    ],
+                    'set' => [
+                        'type' => Literal::class,
+                        'options' => [
+                            'route' => '/set',
+                            'defaults' => [
+                                'controller' => Controller\DocumentoController::class,
+                                'action'     => 'setVenda',
+                            ],
+                        ],
+                    ],
+                ],
             ],
         ],
     ],

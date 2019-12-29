@@ -72,3 +72,33 @@ a:hover {
    padding-top: 15px;
    margin-bottom: 0px!important;
 }
+
+/* === card component ====== 
+ * Variation of the panel component
+ * version 2018.10.30
+ * https://codepen.io/jstneg/pen/EVKYZj
+ */
+ .card{ background-color: #fff; border: 1px solid transparent; border-radius: 6px; }
+
+ /* -- default theme ------ */
+ .card-default{ 
+   border-color: #ddd;
+   background-color: #fff;
+   margin-bottom: 24px;
+ }
+
+ .card-default p:last-child{ margin-bottom: 0; }
+
+ .card .card-body{ display: table; width: 100%; padding: 12px; }
+ .card .card-left{ position: relative; float: left; padding: 0 0 8px 0; }
+ .card .card-right{ position: relative; float: left; padding: 8px 0 0 0; }
+ .card .card-body h1:first-child,
+ .card .card-body h2:first-child,
+ .card .card-body h3:first-child, 
+ .card .card-body h4:first-child,
+ .card .card-body .h1,
+ .card .card-body .h2,
+ .card .card-body .h3, 
+ .card .card-body .h4{ margin-top: 0; }
+
+ .card .card-body .lead{ text-align: center; }

@@ -1,6 +1,9 @@
-<div class="center-block">
+<?= $this->inlineScript()
+            ->prependFile($this->basePath('angular/documento.js'))
+        ?>
 
-    <div class="row"><br></div>
+
+<div class="center-block" ng-app="AppDocumento" ng-controller="DocumentoController">
 
     <div class="row">
         <h3> Venda de Produtos </h3>
@@ -9,7 +12,7 @@
     <div class="row"><br></div>
 
     <div class="row">
-        <h4>Venda Atual: 1</h4>
+        <h4>Venda Atual: {{arrDadosVenda.id_documento}}</h4>
     </div>
 
     <div class="row"><br></div>
@@ -20,33 +23,31 @@
         <div class="col-md-6">
             <h4>Lista de Produtos da Venda:<h4>
             
-            <!-- Table -->
-            <table class="table table-striped table-hover table-responsive">
+            <div class="row" ng-show="arrProdutosVenda.length > 0">
+                <!-- Table -->
+                <table class="table table-striped table-hover table-responsive">
                 <thead>
-                    <tr>
-                        <th>Código</th>
-                        <th>Descrição</th>
-                        <th>Preço</th>
-                    </tr>
+                <tr>
+                    <th>Código</th>
+                    <th>Descrição</th>
+                    <th>Preço</th>
+                </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td width="20%">1</td>
-                        <td width="40%">Otto</td>
-                        <td width="40%">@mdo</td>
-                    </tr>
-                    <tr>
-                        <td>2</td>
-                        <td>Thornton</td>
-                        <td>@fat</td>
-                    </tr>
-                    <tr>
-                        <td>3</td>
-                        <td>the Bird</td>
-                        <td>@twitter</td>
-                    </tr>
+                <tr ng-repeat=" (key, produto) in arrProdutosVenda">
+                    <td width="20%">{{produto.ds_codigo_produto}}</td>
+                    <td width="40%">{{produto.ds_produto}}</td>
+                    <td width="40%">{{produto.vl_produto}}</td>
+                </tr>
                 </tbody>
             </table>
+            </div>
+
+            <div class="row" ng-show="arrProdutosVenda.length == 0">
+                <div class="alert alert-warning">
+                    Favor adicionar um produto a venda!
+                </div>
+            </div>
         </div>
 
         <!-- Incluir produtos na venda -->
@@ -57,15 +58,20 @@
             </div>
 
             <div class="col-md-12">
-                <input type="text" class="form-control" name="filtroproduto" id="filtroproduto" placeholder="Código ou Descrição">
+                <input type="text" class="form-control" name="filtroproduto" id="filtroproduto"  ng-model="filtroproduto" placeholder="Código do produto">
             </div>
 
             <div class="col-md-12 text-right" style="margin-top: 5px;">
-                <button type="button" class="btn btn-primary">
-                    Ok
+                <button type="button" class="btn btn-primary" ng-click="realizarFiltro()" ng-disabled="snAtualizandoVenda">
+                    Ok <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
                 </button>
             </div>
-        </div>
+
+            <div class="col-md-12"  style="margin-top: 5px;">
+                <div class="alert alert-success" ng-show="snProdutoFiltradoExiste === false">
+                    <a href="#" class="alert-link">Produto não cadastrado!</a>
+                </div>        
+            </div>
 
     </div>
 
@@ -73,15 +79,25 @@
 
     <div class="row">
         <div class="col-md-6 text-left">
-            <a class="btn btn-default" role="button" href="<?= $this->url('home'); ?>">
+            <a class="btn btn-danger" role="button" ng-click="cancelarVenda()" ng-disabled="snAtualizandoVenda">
                 Cancelar
             </a>
         </div>
 
         <div class="col-md-6 text-right">
-            <button type="button" class="btn btn-primary">
+            <button type="button" class="btn btn-primary" ng-click="confirmarVenda()" ng-disabled="snAtualizandoVenda">
                 Confirmar
             </button>
+        </div>
+    </div>
+
+    <div class="row"><br></div>
+    
+    <div class="row">
+        <div class="col-md-12 text-left">
+            <a class="btn btn-default" role="button" href="<?= $this->url('home'); ?>">
+                Voltar
+            </a>
         </div>
     </div>
 </div>

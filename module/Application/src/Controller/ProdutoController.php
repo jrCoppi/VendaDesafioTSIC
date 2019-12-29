@@ -8,54 +8,104 @@ namespace Application\Controller;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
 use Zend\View\Model\JsonModel;
+use Application\Controller\Base\ProdutoControllerBase;
 
 class ProdutoController extends AbstractActionController
 {
     /**
-     * Entity manager.
-     * @var Doctrine\ORM\EntityManager 
+     * Base do Produto
+     * @var Application\Controller\ProdutoControllerBase
      */
-    private $entityManager;
+    private $produtoBase;
 
     /**
-     * Constructor is used for injecting dependencies into the controller.
+     * Construtor recebe o entity manager e passa para a base
      */
     public function __construct($entityManager) 
     {
-        $this->entityManager = $entityManager;
+        $this->produtoBase = new ProdutoControllerBase($entityManager);
     }
 
+    /**
+     *  Tela de Produto
+     */ 
     public function indexAction()
     {
         return new ViewModel();
     }
 
-    //busca os produtos baseados num filtro
+    /**
+     * busca os produtos baseados num filtro
+     */
     public function getProdutoAction()
     {
         //padrão de retorno para a aplicação
-        $arrRetorno = [
-            'sucesso' => true,
-            'mensagem' => '',
-            'dados' => []
-        ];
+        $arrRetorno = $this
+            ->getRetornoPadrao();
 
         //dados do post, decodifica json
-        $arrDadosPost = json_decode($this->request->getContent());
+        $arrDadosPost = $this
+            ->getDadosFromPost();
 
-        //verifica se veio o filtro
-        if(empty($arrDadosPost) || empty($arrDadosPost->filtroproduto)) {
-            $arrRetorno['sucesso'] = false;
-            $arrRetorno['mensagem'] = "Filtro não informado";
+        //verifica se os dados do post são validos
+        $isPostValido = $this
+            ->isPostValido(
+                $arrRetorno,
+                $arrDadosPost
+            );
 
+        if($isPostValido == false){
             return new JsonModel($arrRetorno);
         }
 
-        //busca produtos na base
-        $this->getProdutoFromBase(
-            $arrDadosPost->filtroproduto,
-            $arrRetorno
-        );
+        try{
+            //busca produtos na base
+            $arrRetorno['dados'] = $this
+                ->produtoBase
+                ->getListaProdutos(
+                    $arrDadosPost->filtroproduto
+                );
+        }  catch (\Exception $e){
+            $arrRetorno['sucesso'] = false;
+            $arrRetorno['mensagem'] = "Não foi possivel recuperar os produtos da base.";
+        }
+        
+        return new JsonModel($arrRetorno);
+    }
+
+    //busca os produtos baseados num filtro
+    public function getProdutoVendaAction()
+    {
+        //padrão de retorno para a aplicação
+        $arrRetorno = $this
+            ->getRetornoPadrao();
+
+        //dados do post, decodifica json
+        $arrDadosPost = $this
+            ->getDadosFromPost();
+
+        //verifica se os dados do post são validos
+        $isPostValido = $this
+            ->isPostValido(
+                $arrRetorno,
+                $arrDadosPost
+            );
+        
+        if($isPostValido == false){
+            return new JsonModel($arrRetorno);
+        }
+
+        try{
+            //busca produtos na base
+            $arrRetorno['dados'] = $this
+                ->produtoBase
+                ->getProduto(
+                    $arrDadosPost->filtroproduto
+                );
+        }  catch (\Exception $e){
+            $arrRetorno['sucesso'] = false;
+            $arrRetorno['mensagem'] = "Não foi possivel recuperar os produtos da base.";
+        }
         
         return new JsonModel($arrRetorno);
     }
@@ -64,74 +114,102 @@ class ProdutoController extends AbstractActionController
     public function setProdutoAction()
     {
         //padrão de retorno para a aplicação
-        $arrRetorno = [
-            'sucesso' => true,
-            'mensagem' => '',
-            'dados' => []
-        ];
-
+        $arrRetorno = $this
+            ->getRetornoPadrao();
+    
         //dados do post, decodifica json
-        $arrDadosPost = json_decode($this->request->getContent());
-
-        //verifica se veio o filtro
-        if(empty($arrDadosPost) || empty($arrDadosPost->ds_codigo_produto)) {
-            $arrRetorno['sucesso'] = false;
-            $arrRetorno['mensagem'] = "Produto não informado";
-
+        $arrDadosPost = $this
+            ->getDadosFromPost();
+    
+        //verifica se os dados do post são validos
+        $isPostValido = $this
+            ->isPostValido(
+                $arrRetorno,
+                $arrDadosPost,
+                false
+            );
+        
+        if($isPostValido == false){
             return new JsonModel($arrRetorno);
         }
 
-        //Faz a inserção do produto
-        //TO-DO caso aconteça um erro ao inserir, setar como erro e retornar a mensagem
-        $this->setProdutoBase(
-            $arrDadosPost,
-            $arrRetorno
-        );
-        
-        return new JsonModel($arrRetorno);
-    }
-
-    //busca o produto da base
-    private function getProdutoFromBase(
-        $filtroproduto,
-        &$arrRetorno
-    ) {  
         try{
-            //faz os filtros para encontrar o produto
-            $result = $this->entityManager->createQueryBuilder();
-            $listaProdutos = $result->select('p')
-                    ->from('Application\Model\Produto', 'p')
-                    ->where('p.ds_codigo_produto like :id')
-                    ->orWhere('p.ds_produto like :id')
-                    ->setParameter('id', '%'.$filtroproduto.'%')
-                    ->getQuery()
-                    ->getResult(\Doctrine\ORM\Query::HYDRATE_ARRAY);
-
-            //seta no array de retorno
-            $arrRetorno['dados'] = $listaProdutos;
-        }  catch (\Exception $e){
-            $arrRetorno['sucesso'] = false;
-            $arrRetorno['mensagem'] = "Não foi possivel recuperar os produtos da base.";
-        }
-    } 
-
-    //seta o produto na base
-    private function setProdutoBase(
-        $arrDados,
-        &$arrRetorno
-    ) {
-        try{
-            //puxa o model do doctrine e cria um novo produto
-            $produto = new \Application\Model\Produto();
-            $produto->setDsCodigoProduto($arrDados->ds_codigo_produto);
-            $produto->setDsProduto($arrDados->ds_produto);
-            $produto->setVlProduto($arrDados->vl_produto);
-
-            $this->entityManager->persist($produto);
-            $this->entityManager->flush();
+            //Faz a inserção do produto
+            $arrRetorno['dados'] = $this
+                ->produtoBase
+                ->setProduto(
+                    $arrDadosPost->ds_codigo_produto,
+                    $arrDadosPost->ds_produto,
+                    $arrDadosPost->vl_produto
+                );
         }  catch (\Exception $e){
             $arrRetorno['sucesso'] = false;
             $arrRetorno['mensagem'] = "Não foi possivel inserir o produto.";
         }
+
+        return new JsonModel($arrRetorno);
+    }
+
+    /**
+     * Retorna o retorno padrão desta controller
+     */
+    private function getRetornoPadrao() {
+        return [
+            'sucesso' => true,
+            'mensagem' => '',
+            'dados' => []
+        ];
+    }
+
+    /**
+     * Verificar se o post é valido
+     * @param array $arrRetorno
+     * @param array $arrDadosPost
+     * @param boolean $isFiltro
+     */
+    private function isPostValido(
+        &$arrRetorno,
+        $arrDadosPost,
+        $isFiltro = true
+    ) {
+        if(empty($arrDadosPost) == true){
+            $arrRetorno['sucesso'] = false;
+            $arrRetorno['mensagem'] = "Filtro não informado";
+
+            return false;
+        }
+
+        if($isFiltro == true){
+            //verifica se veio o filtro de produto
+            if(empty($arrDadosPost->filtroproduto) == true) {
+                $arrRetorno['sucesso'] = false;
+                $arrRetorno['mensagem'] = "Filtro não informado";
+
+                return false;
+            }
+
+            return true;
+        }
+        
+        //verifica se veio o código do produto
+        if(empty($arrDadosPost->ds_codigo_produto) == true) {
+            $arrRetorno['sucesso'] = false;
+            $arrRetorno['mensagem'] = "Filtro não informado";
+
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
+     * Retorna os dados do post
+     */
+    private function getDadosFromPost() {
+        return json_decode(
+            $this
+                ->request
+                ->getContent()
+        );
     }
 }

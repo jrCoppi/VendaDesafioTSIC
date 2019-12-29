@@ -4,8 +4,6 @@
 
 <div class="center-block" ng-app="AppProduto" ng-controller="ProdutoController">
 
-    <div class="row"><br></div>
-
     <div class="row">
         <h3> Cadastro de Produtos </h3>
     </div>
@@ -97,16 +95,22 @@
                     Preço:
                 </div>
                 <div class="container  col-md-6">
-                    <input type="text" class="form-control" ng-model="arrNovoProduto.vl_produto" name="preco" id="preco">
+                    <input type="text" class="form-control" ng-model="arrNovoProduto.vl_produto" name="preco" id="preco" onkeypress="return isNumberKey(event)">
                 </div>
 
-                <div class="alert alert-success" ng-show="isProdutoInserido">
-                    <a href="#" class="alert-link">Produto Inserido com sucesso!</a>
+                <div class="container  col-md-12">
+                    <div class="alert alert-success" ng-show="snProdutoInserido">
+                        <a href="#" class="alert-link">Produto Inserido com sucesso!</a>
+                    </div>
+
+                    <div class="alert alert-warning" ng-show="snFiltroValido === false">
+                        <a href="#" class="alert-link">Favor informar o código do produto!</a>
+                    </div>
                 </div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" id="botaoCancelar" data-dismiss="modal">Cancelar</button>
-                <button type="button" class="btn btn-primary" ng-click="adicionarProduto()">Incluir</button>
+                <button type="button" class="btn btn-primary" ng-click="adicionarProduto()" ng-disabled="snAtualizandoProduto">Incluir</button>
             </div>
             </div>
         </div>
