@@ -134,4 +134,57 @@ class ProdutoController extends AbstractActionController
             $arrRetorno['mensagem'] = "Não foi possivel inserir o produto.";
         }
     }
+
+     //busca os produtos baseados num filtro
+    public function getProdutoVendaAction()
+    {
+        //padrão de retorno para a aplicação
+        $arrRetorno = [
+            'sucesso' => true,
+            'mensagem' => '',
+            'dados' => []
+        ];
+
+        //dados do post, decodifica json
+        $arrDadosPost = json_decode($this->request->getContent());
+
+        //verifica se veio o filtro
+        if(empty($arrDadosPost) || empty($arrDadosPost->filtroproduto)) {
+            $arrRetorno['sucesso'] = false;
+            $arrRetorno['mensagem'] = "Filtro não informado";
+
+            return new JsonModel($arrRetorno);
+        }
+
+        //busca produtos na base
+        $this->getProdutoVendaFromBase(
+            $arrDadosPost->filtroproduto,
+            $arrRetorno
+        );
+
+        return new JsonModel($arrRetorno);
+    }
+
+    //busca o produto da base
+    private function getProdutoVendaFromBase(
+        $filtroproduto,
+        &$arrRetorno
+    ) {  
+        try{
+            //faz os filtros para encontrar o produto
+            $result = $this->entityManager->createQueryBuilder();
+            $listaProdutos = $result->select('p')
+                    ->from('Application\Model\Produto', 'p')
+                    ->where('p.ds_codigo_produto = :id')
+                    ->setParameter('id', $filtroproduto)
+                    ->getQuery()
+                    ->getResult(\Doctrine\ORM\Query::HYDRATE_ARRAY);
+
+            //seta no array de retorno
+            $arrRetorno['dados'] = $listaProdutos;
+        }  catch (\Exception $e){
+            $arrRetorno['sucesso'] = false;
+            $arrRetorno['mensagem'] = "Não foi possivel recuperar os produtos da base.";
+        }
+    } 
 }

@@ -43,15 +43,18 @@ function createController( $scope, $http ) {
                 //se não achou produto
                 if(data.dados.length == 0){
                     $scope.snProdutoFiltradoExiste = false;
+                    return false;
                 }
 
+                let produto = data.dados[0];
+
                 //adiciona produto a venda
-                $scope.arrProdutosVenda.push(data.dados);
+                $scope.arrProdutosVenda.push(produto);
 
                 //atualiza a venda com o produto
                 $scope.atualizaVenda(
-                    data.dados.id_produto, 
-                    data.dados.vl_produto
+                    produto.id_produto, 
+                    produto.vl_produto
                 );
             }
         );
@@ -65,7 +68,7 @@ function createController( $scope, $http ) {
         vl_produto
     ){
         //por segurança verifica se ja não esta executando a ação
-        if(!$scope.snAtualizandoVenda){
+        if($scope.snAtualizandoVenda){
             return false;
         }
 
@@ -74,8 +77,8 @@ function createController( $scope, $http ) {
         //se ainda não tem id cria
         if($scope.arrDadosVenda.id_documento == null) {
             $scope.setVenda(
-                data.dados.id_produto, 
-                data.dados.vl_produto
+                id_produto, 
+                vl_produto
             );
 
             return false;
@@ -123,7 +126,7 @@ function createController( $scope, $http ) {
         .success(
             function(data){
                 //seta o id da venda
-                $scope.arrDadosVenda.id_documento = data.dados.id_documento;      
+                $scope.arrDadosVenda.id_documento = data.dados[0].id_documento;      
 
                 $scope.snAtualizandoVenda = false;
             }
