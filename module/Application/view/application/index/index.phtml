@@ -10,8 +10,15 @@
     <div class="row"><br></div>
     <div class="row"><br></div>
 
-    <div class="row">
+    <div class="row hidden-xs">
         <div class="btn-group btn-group-lg btn-group-justified">
+            <a class="btn btn-default" role="button" href="<?= $this->url('produto'); ?>">Cadastro de Produtos</a>
+            <a class="btn btn-default" role="button" href="<?= $this->url('documento'); ?>">Venda de Produtos</a>
+        </div>
+    </div>
+
+    <div class="row visible-xs">
+        <div class="btn-group btn-group-justified">
             <a class="btn btn-default" role="button" href="<?= $this->url('produto'); ?>">Cadastro de Produtos</a>
             <a class="btn btn-default" role="button" href="<?= $this->url('documento'); ?>">Venda de Produtos</a>
         </div>
