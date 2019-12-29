@@ -81,15 +81,25 @@
 
     <div class="row">
         <div class="col-md-6 text-left">
-            <a class="btn btn-default" role="button" ng-click="cancelarVenda()">
+            <a class="btn btn-danger" role="button" ng-click="cancelarVenda()" ng-disabled="snAtualizandoVenda">
                 Cancelar
             </a>
         </div>
 
         <div class="col-md-6 text-right">
-            <button type="button" class="btn btn-primary" ng-click="confirmarVenda()">
+            <button type="button" class="btn btn-primary" ng-click="confirmarVenda()" ng-disabled="snAtualizandoVenda">
                 Confirmar
             </button>
+        </div>
+    </div>
+
+    <div class="row"><br></div>
+    
+    <div class="row">
+        <div class="col-md-12 text-left">
+            <a class="btn btn-default" role="button" href="<?= $this->url('home'); ?>">
+                Voltar
+            </a>
         </div>
     </div>
 </div>

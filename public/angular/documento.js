@@ -30,6 +30,12 @@ function createController( $scope, $http ) {
     $scope.realizarFiltro = function(){
         $scope.snProdutoFiltradoExiste = null;
 
+        //por segurança verifica se ja não esta executando a ação
+        if($scope.snAtualizandoVenda){
+            return false;
+        }
+        $scope.snAtualizandoVenda = true;
+
         let arrDados = {
             filtroproduto : $scope.filtroproduto
          };
@@ -50,6 +56,7 @@ function createController( $scope, $http ) {
 
                 //adiciona produto a venda
                 $scope.arrProdutosVenda.push(produto);
+                $scope.filtroproduto = '';
 
                 //atualiza a venda com o produto
                 $scope.atualizaVenda(
@@ -67,13 +74,6 @@ function createController( $scope, $http ) {
         id_produto,
         vl_produto
     ){
-        //por segurança verifica se ja não esta executando a ação
-        if($scope.snAtualizandoVenda){
-            return false;
-        }
-
-        $scope.snAtualizandoVenda = true;
-
         //se ainda não tem id cria
         if($scope.arrDadosVenda.id_documento == null) {
             $scope.setVenda(
@@ -89,7 +89,10 @@ function createController( $scope, $http ) {
 
         let arrDados = {
             id_produto : id_produto,
-            vl_total_documento: $scope.arrDadosVenda.vl_total_documento
+            id_documento : $scope.arrDadosVenda.id_documento,
+            vl_total_documento: $scope.arrDadosVenda.vl_total_documento,
+            sn_documento_confirmado: $scope.arrDadosVenda.sn_documento_confirmado,
+            sn_documento_cancelado: $scope.arrDadosVenda.sn_documento_cancelado
         };
 
         $http.post(
@@ -126,7 +129,7 @@ function createController( $scope, $http ) {
         .success(
             function(data){
                 //seta o id da venda
-                $scope.arrDadosVenda.id_documento = data.dados[0].id_documento;      
+                $scope.arrDadosVenda.id_documento = data.dados.id_documento;      
 
                 $scope.snAtualizandoVenda = false;
             }
@@ -138,9 +141,16 @@ function createController( $scope, $http ) {
      */
     $scope.confirmarVenda = function()
     {
+        if($scope.snAtualizandoVenda){
+            return false;
+        }
+        
+        $scope.snAtualizandoVenda = true;
+
         let arrDados = {
             sn_documento_confirmado : true,
             sn_documento_cancelado : false,
+            vl_total_documento : $scope.arrDadosVenda.vl_total_documento,
             id_documento : $scope.arrDadosVenda.id_documento
         };   
 
@@ -150,7 +160,7 @@ function createController( $scope, $http ) {
         )
         .success(
             function(data){
-                document.location.href = "../public";
+                $scope.novaVenda();
             }
         );
     }
@@ -160,9 +170,16 @@ function createController( $scope, $http ) {
      */
     $scope.cancelarVenda = function()
     {
+        if($scope.snAtualizandoVenda){
+            return false;
+        }
+        
+        $scope.snAtualizandoVenda = true;
+
         let arrDados = {
             sn_documento_confirmado : false,
             sn_documento_cancelado : true,
+            vl_total_documento : $scope.arrDadosVenda.vl_total_documento,
             id_documento : $scope.arrDadosVenda.id_documento
         };   
 
@@ -172,8 +189,29 @@ function createController( $scope, $http ) {
         )
         .success(
             function(data){
-                document.location.href = "../public";
+                $scope.novaVenda();
             }
         );
+    }
+
+    /**
+     * Prepara a tela para uma nova venda
+     */
+    $scope.novaVenda = function()
+    {
+        $scope.filtroproduto = '';
+        $scope.snProdutoFiltradoExiste = null;
+        $scope.snAtualizandoVenda = false;
+    
+        //Dados da modal de novo produto
+        $scope.arrDadosVenda = {
+            id_documento : null,
+            vl_total_documento : 0,
+            sn_documento_confirmado : false,   
+            sn_documento_cancelado : false
+        };
+    
+        //Lista de produtos da venda
+        $scope.arrProdutosVenda = [];
     }
 }
