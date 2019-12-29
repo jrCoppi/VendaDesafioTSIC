@@ -24,6 +24,25 @@ return [
                     ],
                 ],
             ],
+            'admin' => [
+                'type'    => Literal::class,
+                'options' => [
+                    'route'    => '/admin'
+                ],
+                'may_terminate' => false,
+                'child_routes' => [
+                    'get' => [
+                        'type' => Literal::class,
+                        'options' => [
+                            'route' => '/get',
+                            'defaults' => [
+                                'controller' => Controller\IndexController::class,
+                                'action'     => 'getDadosAdmin',
+                            ],
+                        ],
+                    ],
+                ],
+            ],
             'produto' => [
                 'type'    => Literal::class,
                 'options' => [

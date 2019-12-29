@@ -12,7 +12,7 @@ use Application\Controller\Base\ProdutoControllerBase;
 
 class ProdutoController extends AbstractActionController
 {
-/**
+    /**
      * Base do Produto
      * @var Application\Controller\ProdutoControllerBase
      */
