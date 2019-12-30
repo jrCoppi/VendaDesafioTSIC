@@ -20,8 +20,14 @@ function createController( $scope, $http ) {
         )
         .success(
             function(data){
-              $scope.valorTotalVenda = data.dados[0].vl_total_venda;
-              $scope.snValorTotalRecuperado = true;
+                $valorTotalVenda = data.dados[0].vl_total_venda;
+
+                if($valorTotalVenda == null){
+                    $valorTotalVenda = 0.00;
+                }
+
+                $scope.valorTotalVenda = $valorTotalVenda;
+                $scope.snValorTotalRecuperado = true;
             }
         );
     }

@@ -63,10 +63,14 @@ function createController( $scope, $http ) {
                 if(data.sucesso == true){
                     setTimeout(
                         function() {
-                            //fecha a modal e recarrega o filtro
+                            
+                            //limpa a modal de produto
                             botaoCancelar.click();
+                            $novoProduto = $scope.arrNovoProduto.ds_codigo_produto;
+                            $scope.novoProduto();
 
-                            $scope.filtroproduto = $scope.arrNovoProduto.ds_codigo_produto;
+                            //fecha a modal e recarrega o filtro
+                            $scope.filtroproduto = $novoProduto
                             $scope.realizarFiltro();
                         }, 1000
                     );
@@ -81,7 +85,7 @@ function createController( $scope, $http ) {
      }
 
 
-    $scope.novoProduto = function(){
+     $scope.novoProduto = function(){
         //Dados da modal de novo produto
         $scope.arrNovoProduto = {
             ds_codigo_produto : '',
