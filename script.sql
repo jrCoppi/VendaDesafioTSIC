@@ -30,5 +30,3 @@ Create Table documento_produto (
 	Foreign Key(id_produto) references produto (id_produto),
 	Foreign Key(id_documento) references documento (id_documento)
 );
-
-## TO-DO Criar view listando uma venda, seus produtos, e o valor total

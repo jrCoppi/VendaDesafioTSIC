@@ -1,40 +1,5 @@
-.negrito {
-    font-style: bold;
-}
-
 .link{
     cursor: pointer;
-}
-
-.panel_bg {
-    background-color: #f5f5f5;
-}
-
-.login_bg {
-    background-color: #ECECEC;
-}
-
-.group_linhas {
-   box-shadow: none;
-}
-
-.lista_linhas {
-   border: none;
-}
-
-.tooltip-inner {
-    max-width: 500px;
-    /* If max-width does not work, try using width instead */
-    width: 500px; 
-}
-
-.bs-docs-footer {
-    padding-top: 50Px;
-    padding-bottom: 50px;
-    margin-top: 15px;
-    color: #99979c;
-    text-align: center;
-    background-color: #2a2730
 }
 
 a { color:black; }
@@ -43,35 +8,6 @@ a:hover {
    cursor: pointer; 
 }
 .nav a { color:black; }
-
-.divTitulo {
-   color:white;
-   background-color: #2e2e2e;
-   font-weight: bold;
-   font-size: 16px;
-   padding-top: 5px;
-   padding-bottom: 5px;
-}
-
-.tituloNovo {
-   display: block;
-   padding: 1px;
-   color: #fff;
-   text-align: center;
-   background-color: #0056a0;
-}
-
-
-.bordaTabela {
-   border: 1px solid #ccc;
-}
-
-.pageHeader {
-   border-bottom:1px solid #eee; 
-   background-color: rgba(204, 204, 204, 0.57);
-   padding-top: 15px;
-   margin-bottom: 0px!important;
-}
 
 /* === card component ====== 
  * Variation of the panel component
@@ -88,7 +24,6 @@ a:hover {
  }
 
  .card-default p:last-child{ margin-bottom: 0; }
-
  .card .card-body{ display: table; width: 100%; padding: 12px; }
  .card .card-left{ position: relative; float: left; padding: 0 0 8px 0; }
  .card .card-right{ position: relative; float: left; padding: 8px 0 0 0; }
@@ -100,5 +35,4 @@ a:hover {
  .card .card-body .h2,
  .card .card-body .h3, 
  .card .card-body .h4{ margin-top: 0; }
-
  .card .card-body .lead{ text-align: center; }
